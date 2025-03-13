@@ -56,6 +56,7 @@ import { AttachmentPointName, MonomerItemType } from 'domain/types';
 import { DOMSubscription } from 'subscription';
 import { initHotKeys, KetcherLogger, keyNorm } from 'utilities';
 import monomersDataRaw from './data/monomers.ket';
+import monomersDataRawOld from './data/monomers-old.ket';
 import { EditorHistory, HistoryOperationType } from './EditorHistory';
 import { Coordinates } from './shared/coordinates';
 import ZoomTool from './tools/Zoom';
@@ -78,6 +79,9 @@ interface ICoreEditorConstructorParams {
 let persistentMonomersLibrary: MonomerItemType[] = [];
 let persistentMonomersLibraryParsedJson: IKetMacromoleculesContent | null =
   null;
+let persistentMonomersLibraryOld: MonomerItemType[] = [];
+let persistentMonomersLibraryParsedJsonOld: IKetMacromoleculesContent | null =
+  null;
 
 let editor;
 
@@ -93,6 +97,9 @@ export class CoreEditor {
   public lastCursorPositionOfCanvas: Vec2 = new Vec2(0, 0);
   private _monomersLibraryParsedJson: IKetMacromoleculesContent | null = null;
   private _monomersLibrary: MonomerItemType[] = [];
+  private _monomersLibraryParsedJsonOld: IKetMacromoleculesContent | null =
+    null;
+  private _monomersLibraryOld: MonomerItemType[] = [];
   public canvas: SVGSVGElement;
   public drawnStructuresWrapperElement: SVGGElement;
   public canvasOffset: DOMRect;
@@ -129,10 +136,12 @@ export class CoreEditor {
     resetEditorEvents();
     this.events = editorEvents;
     this.setMonomersLibrary(monomersDataRaw);
+    this.setMonomersLibraryOld(monomersDataRawOld);
     this._monomersLibraryParsedJson = JSON.parse(monomersDataRaw);
-    if (monomersLibraryUpdate) {
-      this.updateMonomersLibrary(monomersLibraryUpdate);
-    }
+    this._monomersLibraryParsedJsonOld = JSON.parse(monomersDataRawOld);
+    // if (monomersLibraryUpdate) {
+    //   this.updateMonomersLibrary(monomersLibraryUpdate);
+    // }
     this.subscribeEvents();
     this.renderersContainer = new RenderersManager({ theme });
     this.drawingEntitiesManager = new DrawingEntitiesManager();
@@ -173,6 +182,24 @@ export class CoreEditor {
     this._monomersLibraryParsedJson = monomersLibraryParsedJson;
     persistentMonomersLibrary = monomersLibrary;
     persistentMonomersLibraryParsedJson = monomersLibraryParsedJson;
+  }
+
+  private setMonomersLibraryOld(monomersDataRawOld: string) {
+    if (
+      persistentMonomersLibraryOld.length !== 0 &&
+      persistentMonomersLibraryParsedJsonOld !== undefined
+    ) {
+      this._monomersLibraryOld = persistentMonomersLibrary;
+      this._monomersLibraryParsedJsonOld = persistentMonomersLibraryParsedJson;
+      return;
+    }
+
+    const { monomersLibraryParsedJson, monomersLibrary } =
+      parseMonomersLibrary(monomersDataRawOld);
+    this._monomersLibraryOld = monomersLibrary;
+    this._monomersLibraryParsedJsonOld = monomersLibraryParsedJson;
+    persistentMonomersLibraryOld = monomersLibrary;
+    persistentMonomersLibraryParsedJsonOld = monomersLibraryParsedJson;
   }
 
   public updateMonomersLibrary(monomersDataRaw: string | JSON) {
@@ -243,6 +270,10 @@ export class CoreEditor {
 
   public get monomersLibrary() {
     return this._monomersLibrary;
+  }
+
+  public get monomersLibraryOld() {
+    return this._monomersLibraryOld;
   }
 
   public get defaultRnaPresetsLibraryItems() {
