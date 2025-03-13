@@ -97,8 +97,13 @@ export class CoreEditor {
   public lastCursorPositionOfCanvas: Vec2 = new Vec2(0, 0);
   private _monomersLibraryParsedJson: IKetMacromoleculesContent | null = null;
   private _monomersLibrary: MonomerItemType[] = [];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private _monomersLibraryParsedJsonOld: IKetMacromoleculesContent | null =
     null;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private _monomersLibraryOld: MonomerItemType[] = [];
   public canvas: SVGSVGElement;
   public drawnStructuresWrapperElement: SVGGElement;
@@ -120,12 +125,7 @@ export class CoreEditor {
   private pasteEventHandler: (event: ClipboardEvent) => void = () => {};
   private keydownEventHandler: (event: KeyboardEvent) => void = () => {};
 
-  constructor({
-    theme,
-    canvas,
-    mode,
-    monomersLibraryUpdate,
-  }: ICoreEditorConstructorParams) {
+  constructor({ theme, canvas, mode }: ICoreEditorConstructorParams) {
     this._type = EditorType.Macromolecules;
     this.theme = theme;
     this.canvas = canvas;
