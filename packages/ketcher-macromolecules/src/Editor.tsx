@@ -102,6 +102,8 @@ import { RootSizeProvider } from './contexts';
 import { MacromoleculePropertiesWindow } from 'components/macromoleculeProperties';
 import { RulerArea } from 'components/Ruler/RulerArea';
 
+import './theme.less';
+
 const muiTheme = createTheme(muiOverrides);
 
 interface EditorProps {
