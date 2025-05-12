@@ -63,6 +63,7 @@ export interface IEditorEvents {
   deleteSelectedStructure: Subscription;
   selectEntities: Subscription;
   toggleMacromoleculesPropertiesVisibility: Subscription;
+  setEditorLineLength: Subscription;
 }
 
 export let editorEvents: IEditorEvents;
@@ -126,6 +127,7 @@ export function resetEditorEvents() {
     deleteSelectedStructure: new Subscription(),
     selectEntities: new Subscription(),
     toggleMacromoleculesPropertiesVisibility: new Subscription(),
+    setEditorLineLength: new Subscription(),
   };
 }
 resetEditorEvents();

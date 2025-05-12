@@ -468,6 +468,11 @@ export class CoreEditor {
       history.update(command);
       this.renderersContainer.update(command);
     });
+
+    this.events.setEditorLineLength.add(() => {
+      // TODO: Save changes to history
+      this.mode.initialize();
+    });
   }
 
   private onEditSequence(sequenceItemRenderer: BaseSequenceItemRenderer) {
