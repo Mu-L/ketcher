@@ -64,6 +64,7 @@ export interface IEditorEvents {
   selectEntities: Subscription;
   toggleMacromoleculesPropertiesVisibility: Subscription;
   setEditorLineLength: Subscription;
+  toggleLineLengthHighlighting: Subscription;
 }
 
 export let editorEvents: IEditorEvents;
@@ -128,6 +129,7 @@ export function resetEditorEvents() {
     selectEntities: new Subscription(),
     toggleMacromoleculesPropertiesVisibility: new Subscription(),
     setEditorLineLength: new Subscription(),
+    toggleLineLengthHighlighting: new Subscription(),
   };
 }
 resetEditorEvents();
